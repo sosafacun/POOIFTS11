@@ -4,13 +4,16 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.align import Align
 from rich import box
+from rich.prompt import Prompt
+
+from utils.exceptions import throw_exception
 
 console = Console()
 
 # Makes a header
 def make_panel(title: str, subtitle: str = "", color: str = "bright_blue"):
     text = f"[bold cyan]{title}[/bold cyan]"
-    if subtitle:
+    if(subtitle):
         text += f"\n[dim]{subtitle}[/dim]"
     return Panel.fit(text, border_style=color)
 
@@ -38,3 +41,33 @@ def display_centered(panel_or_table):
 # Waits for user input
 def pause():
     console.input("\n[dim]Press Enter to continue...[/dim]")
+
+# Default Menu for CRUD (employees, clients and appointments). This is a template.
+def crud_menu(title: str, subtitle: str, items: List[Tuple[str, str]], border_color: str = "bright_green"):
+    while True:
+
+        # Manage the header and prompt
+        console.clear()
+        display_centered(make_panel(title, subtitle))
+        menu = make_menu(title, items, border_color)
+        display_centered(menu)
+        display_centered("[bold white]Select an option[/bold white]")
+
+        # Get user choice
+        choice = Prompt.ask(
+            "\n[bold bright_cyan]Enter your choice[/bold bright_cyan]",
+            choices=[key for key, _ in items] + ["b", "B"],
+            default="B"
+        ).upper()
+
+        console.clear()
+
+        # Handle user input
+        try:
+            if(choice == "B"):
+                console.print(Panel("[bright_red]Returning to main menu...[/bright_red]"))
+                break
+        except:
+            console.print(Panel(throw_exception(2)))
+
+        yield choice

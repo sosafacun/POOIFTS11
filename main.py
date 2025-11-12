@@ -65,32 +65,32 @@ if __name__ == "__main__":
 
         console.clear()
 
-        if option == "1":
+        if(option == "1"):
             try:
                 show_client_menu()
             except:
-                throw_exception(1)
+                console.print(Panel(throw_exception(1)))
         
-        elif option == "2":
+        elif(option == "2"):
             try:
                 show_employee_menu()
             except:
-                throw_exception(1)
+                console.print(Panel(throw_exception(2)))
         
-        elif option == "3":
+        elif(option == "3"):
             try:
                 show_appointment_menu()
             except:
-                throw_exception(1)
+                console.print(Panel(throw_exception(2)))
         
         #This is here to test unhandled exceptions. I wanted to add a new menu but didnt had the time and thought it'd be a good idea.
-        elif option == "4":
+        elif(option == "4"):
             try:
                 show_non_existent_menu()
             except:
-                throw_exception(1)
+                console.print(Panel(throw_exception(2)))
 
-        elif option == "Q":
+        elif(option == "Q"):
             console.print(Panel("[bold red]Exiting...[/bold red]"))
             break
 
