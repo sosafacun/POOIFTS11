@@ -28,6 +28,9 @@ def show_employee_menu():
             default="B"
         ).upper()
 
+        
+        console.clear()
+
         if choice == "B":
             console.print(Panel("[bright_red]Returning to main menu...[/bright_red]"))
             break
@@ -39,9 +42,9 @@ def show_employee_menu():
         elif choice == "3":
             console.print(Panel("[bold green]Updating employee information...[/bold green]"))
         elif choice == "4":
-            console.print(Panel("[bold green]Deleting employee...[/bold green]"))
+            console.print(Panel("[bold green]Deleting an employee...[/bold green]"))
         elif choice == "5":
-            console.print(Panel("[bold green]Search for employee...[/bold green]"))
+            console.print(Panel("[bold green]Searching for employee...[/bold green]"))
 
         pause()
 

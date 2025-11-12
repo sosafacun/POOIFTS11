@@ -4,18 +4,22 @@ from rich.prompt import Prompt
 from rich.panel import Panel
 from rich.align import Align
 
+#exceptions
+from utils.exceptions import throw_exception
+
 #data packages
 from data.client import Client
 from data.employee import Employee
 
-#manager package
-from manager.client_manager import show_client_menu
-from manager.employee_manager import show_employee_menu
+#menus
+from menus.client_menu import show_client_menu
+from menus.employee_menu import show_employee_menu
+from menus.appointment_menu import show_appointment_menu
 
 
 def load_dummy_data():
 
-    # dummy testing data. I should delete this in favour of the .csv, but this will do for the time being.
+    # dummy testing data. I should delete this in favour of the .csv, but this will do for the time being, despite not returning anything.
     clients = [
         Client("Alice Johnson", "1990-05-12", "alice.johnson@email.com", "555-0142", 101, False, "2025-11-01"),
         Client("Brian Smith", "1985-09-23", "brian.smith@email.com", "555-0199", 102, False, "2025-10-18"),
@@ -43,28 +47,49 @@ def show_main_menu():
         ("1", "Client Menu"),
         ("2", "Employee Menu"),
         ("3", "Appointment Menu"),
+        ("4", "Non-existant Menu"),
         ("Q", "Quit the program")
     ]
     menu = make_menu("Main Menu", menu_options, border_color="bright_green")
     display_centered(menu)
-    display_centered("[bold white]Select an option (1–3 or Q)[/bold white]")
+    display_centered("[bold white]Select an option (1–4 or Q)[/bold white]")
 
     # Wait for user Input
-    choice = Prompt.ask("\n[bold bright_cyan]Enter your choice[/bold bright_cyan]", choices=[str(i) for i in range(1, 4)] + ["q", "Q"], default="Q")
+    choice = Prompt.ask("\n[bold bright_cyan]Enter your choice[/bold bright_cyan]", choices=[str(i) for i in range(1, 5)] + ["q", "Q"], default="Q")
     return choice.upper()
 
 if __name__ == "__main__":
     load_dummy_data()
     while True:
         option = show_main_menu()
+
         console.clear()
 
         if option == "1":
-            show_client_menu()
+            try:
+                show_client_menu()
+            except:
+                throw_exception(1)
+        
         elif option == "2":
-            show_employee_menu()
+            try:
+                show_employee_menu()
+            except:
+                throw_exception(1)
+        
         elif option == "3":
-            console.print(Panel("[bold yellow]Scheduling new appointment...[/bold yellow]"))
+            try:
+                show_appointment_menu()
+            except:
+                throw_exception(1)
+        
+        #This is here to test unhandled exceptions. I wanted to add a new menu but didnt had the time and thought it'd be a good idea.
+        elif option == "4":
+            try:
+                show_non_existent_menu()
+            except:
+                throw_exception(1)
+
         elif option == "Q":
             console.print(Panel("[bold red]Exiting...[/bold red]"))
             break

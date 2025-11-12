@@ -28,8 +28,6 @@ def show_client_menu():
             default="B"
         ).upper()
 
-        console.clear()
-
         if choice == "B":
             console.print(Panel("[bright_red]Returning to main menu...[/bright_red]"))
             break
