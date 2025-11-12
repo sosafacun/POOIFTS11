@@ -10,6 +10,7 @@ from data.employee import Employee
 
 #manager package
 from manager.client_manager import show_client_menu
+from manager.employee_manager import show_employee_menu
 
 
 def load_dummy_data():
@@ -61,7 +62,7 @@ if __name__ == "__main__":
         if option == "1":
             show_client_menu()
         elif option == "2":
-            console.print(Panel("[bold green]Registering new employee...[/bold green]"))
+            show_employee_menu()
         elif option == "3":
             console.print(Panel("[bold yellow]Scheduling new appointment...[/bold yellow]"))
         elif option == "Q":
