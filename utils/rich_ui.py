@@ -11,7 +11,7 @@ from utils.exceptions import throw_exception
 console = Console()
 
 # Makes a header
-def make_panel(title: str, subtitle: str = "", color: str = "bright_blue"):
+def make_panel(title: str,subtitle: str = "", color: str = "bright_blue"):
     text = f"[bold cyan]{title}[/bold cyan]"
     if(subtitle):
         text += f"\n[dim]{subtitle}[/dim]"
