@@ -6,8 +6,6 @@ from rich.align import Align
 from rich import box
 from rich.prompt import Prompt
 
-from utils.exceptions import throw_exception
-
 console = Console()
 
 # Makes a header
@@ -46,7 +44,6 @@ def pause():
 def crud_menu(title: str, subtitle: str, items: List[Tuple[str, str]], border_color: str = "bright_green"):
     while True:
         try:
-
             # Manage the header and prompt
             console.clear()
             display_centered(make_panel(title, subtitle))
@@ -69,6 +66,7 @@ def crud_menu(title: str, subtitle: str, items: List[Tuple[str, str]], border_co
                 break
                 console.print(Panel(throw_exception(2)))
 
+            # "send" the info back to the menu
             yield choice
         except Exception as e:
             console.print(Panel(f"[red]Unhandled exception: {e}[/red]"))

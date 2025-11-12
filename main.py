@@ -1,11 +1,8 @@
 #rich libraries
-from utils.rich_ui import console, make_panel, make_menu, display_centered, pause
+from utils.rich_ui import console, make_panel, make_menu, display_centered
 from rich.prompt import Prompt
 from rich.panel import Panel
 from rich.align import Align
-
-#exceptions
-from utils.exceptions import throw_exception
 
 #data packages
 from data.client import Client

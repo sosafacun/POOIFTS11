@@ -5,13 +5,13 @@ from data.status import Status
 
 class Appointment:
     def __init__(self,
-                 appointment_id: int,
-                 scheduled_date: str,
-                 client: Client,
-                 employee: Employee,
-                 duration: int,
-                 status: Status,
-                 is_confirmed: bool):
+        appointment_id: int,
+        scheduled_date: str,
+        client: Client,
+        employee: Employee,
+        duration: int,
+        status: Status,
+        is_confirmed: bool):
 
         self.appointment_id = appointment_id
 

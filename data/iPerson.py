@@ -3,11 +3,11 @@ from datetime import date, datetime
 
 class Person(ABC):
     def __init__(self,
-    name: str,
-    dob: str,
-    email: str,
-    phone: str,
-    is_bday_gift_active: bool):
+        name: str,
+        dob: str,
+        email: str,
+        phone: str,
+        is_bday_gift_active: bool):
 
         self.name = name
         self.dob = datetime.strptime(dob, "%Y-%m-%d").date()
