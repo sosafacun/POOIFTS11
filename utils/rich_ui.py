@@ -45,29 +45,31 @@ def pause():
 # Default Menu for CRUD (employees, clients and appointments). This is a template.
 def crud_menu(title: str, subtitle: str, items: List[Tuple[str, str]], border_color: str = "bright_green"):
     while True:
-
-        # Manage the header and prompt
-        console.clear()
-        display_centered(make_panel(title, subtitle))
-        menu = make_menu(title, items, border_color)
-        display_centered(menu)
-        display_centered("[bold white]Select an option[/bold white]")
-
-        # Get user choice
-        choice = Prompt.ask(
-            "\n[bold bright_cyan]Enter your choice[/bold bright_cyan]",
-            choices=[key for key, _ in items] + ["b", "B"],
-            default="B"
-        ).upper()
-
-        console.clear()
-
-        # Handle user input
         try:
+
+            # Manage the header and prompt
+            console.clear()
+            display_centered(make_panel(title, subtitle))
+            menu = make_menu(title, items, border_color)
+            display_centered(menu)
+            display_centered("[bold white]Select an option[/bold white]")
+
+            # Get user choice
+            choice = Prompt.ask(
+                "\n[bold bright_cyan]Enter your choice[/bold bright_cyan]",
+                choices=[key for key, _ in items] + ["b", "B"],
+                default="B"
+            ).upper()
+
+            console.clear()
+
+            # Handle user input
             if(choice == "B"):
                 console.print(Panel("[bright_red]Returning to main menu...[/bright_red]"))
                 break
-        except:
-            console.print(Panel(throw_exception(2)))
+                console.print(Panel(throw_exception(2)))
 
-        yield choice
+            yield choice
+        except Exception as e:
+            console.print(Panel(f"[red]Unhandled exception: {e}[/red]"))
+            pause()

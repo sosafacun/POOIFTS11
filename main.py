@@ -61,37 +61,27 @@ def show_main_menu():
 if __name__ == "__main__":
     load_dummy_data()
     while True:
-        option = show_main_menu()
+        try:
+            option = show_main_menu()
+            console.clear()
 
-        console.clear()
-
-        if(option == "1"):
-            try:
+            if(option == "1"):
                 show_client_menu()
-            except:
-                console.print(Panel(throw_exception(1)))
-        
-        elif(option == "2"):
-            try:
+            elif(option == "2"):
                 show_employee_menu()
-            except:
-                console.print(Panel(throw_exception(2)))
-        
-        elif(option == "3"):
-            try:
+            elif(option == "3"):
                 show_appointment_menu()
-            except:
-                console.print(Panel(throw_exception(2)))
-        
-        #This is here to test unhandled exceptions. I wanted to add a new menu but didnt had the time and thought it'd be a good idea.
-        elif(option == "4"):
-            try:
+            elif(option == "4"):
                 show_non_existent_menu()
-            except:
-                console.print(Panel(throw_exception(2)))
-
-        elif(option == "Q"):
-            console.print(Panel("[bold red]Exiting...[/bold red]"))
-            break
+            elif(option == "Q"):
+                console.print(Panel("[bold red]Exiting...[/bold red]"))
+                break
+        
+        except KeyError as e:
+            console.print(Panel(f"[red]KeyError: {e}[/red]"))
+        except ValueError as e:
+            console.print(Panel(f"[red]ValueError: {e}[/red]"))
+        except Exception as e:
+            console.print(Panel(f"[red]Unhandled Exception: {e}[/red]"))
 
         console.input("\n[dim]Press Enter to return to the main menu...[/dim]")
