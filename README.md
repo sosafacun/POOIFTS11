@@ -7,7 +7,7 @@ Final Project for OOP at IFTS N°11
 - No web frameworks
 - No DBs.
 - Data must be saved in a .csv file
-- Read the data from the .csv file and turn it in to a dictionary
+- Read the data from the .csv file and turn it into a dictionary
 - Must use OOP and *at least* the following classes:
     - Client
     - Appointment
@@ -22,7 +22,7 @@ Final Project for OOP at IFTS N°11
 
 ### How to handle data and data files
 
-- Everytime data is being saved, it myst save the info into the dictionary and then save it to the csv
+- Every time data is being saved, it must save the info into the dictionary and then save it to the csv
 - The app must be able to convert from .csv to dict and from dict to .csv to achieve the feeling of a persistent database
 - Whenever the app starts, it must load the .csv file automatically.
 
@@ -32,8 +32,13 @@ Final Project for OOP at IFTS N°11
 - Handle exceptions.
 - Use DateTime to handle schedules.
 - Ask the user to confirm an old or new appointment. Once confirmed, the system has to save that date to the .csv, and load it.
-- Whenever the user goes exits or cancels an operation, they have to confirm that there are unsaved changes that are going to be lost; as each time the main menu loads the .csv is read again to mantain data integrity.
+- Whenever the user exits or cancels an operation, they have to confirm that there are unsaved changes that are going to be lost; as each time the main menu loads the .csv is read again to maintain data integrity.
 - Does it have to be Python?
 - Register the DOB of both clients and employees.
     - Employees' DOB will be used to grant them a full-pay free day.
     - Clients' DOB will be used to grant them a free haircut, available for the next 7 days (weekends included).
+- CRUD clients
+- CRUD employees
+- CRUD appointments
+- Check for valid (non-empty) data (no DOB, no name)
+- Add some *color* to the CMD and make it look pretty.
