@@ -1,6 +1,22 @@
 # POOIFTS11
 Final Project for OOP at IFTS N°11
 
+## How to use
+> [!NOTE]
+> This was developed and tested on Python 3.8
+
+1. Clone the repository
+2. Create a venv
+    - **On Windows**: 
+        1. On a CMD write `python -m venv FacundoSosa`
+        2. On the same cmd, activate the newly created venv `.\FacundoSosa\Scripts\Activate.ps1`
+        3. Install the required dependencies by writing `pip install -r requirements.txt`
+    - **On MacOS/Linux**:
+        - On a terminal write `python3 -m venv FacundoSosa`
+        - On the same cmd, activate the newly created venv `.\FacundoSosa\Scripts\activate`
+        3. Install the required dependencies by writing `pip install -r requirements.txt`
+
+
 ## Functional Requirements
 
 - CMD execution

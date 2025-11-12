@@ -1,1 +1,1 @@
-# Here just to indicate that this is a package.
+# Here just to indicate that 'manager' is a package.
