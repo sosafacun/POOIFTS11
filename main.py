@@ -1,7 +1,20 @@
+#rich libraries
+from utils.rich_ui import console, make_panel, make_menu, display_centered, pause
+from rich.prompt import Prompt
+from rich.panel import Panel
+from rich.align import Align
+
+#data packages
 from data.client import Client
 from data.employee import Employee
 
-def main():
+#manager package
+from manager.client_manager import show_client_menu
+
+
+def load_dummy_data():
+
+    # dummy testing data. I should delete this in favour of the .csv, but this will do for the time being.
     clients = [
         Client("Alice Johnson", "1990-05-12", "alice.johnson@email.com", "555-0142", 101, False, "2025-11-01"),
         Client("Brian Smith", "1985-09-23", "brian.smith@email.com", "555-0199", 102, False, "2025-10-18"),
@@ -18,10 +31,41 @@ def main():
         Employee("Jack Taylor", "1988-01-05", "jack.taylor@company.com", "555-0976", 205, False)
     ]
 
-    for c in clients:
-        print(c)
-    for e in employees:
-        print(e)
+def show_main_menu():
+    console.clear()
+
+    #Title
+    display_centered(make_panel("OOP Final Project\t\t|\t\tIFTS N°11", "Teacher: Billi, Emiliano | Student: Sosa, Facundo Nicolás"))
+
+    # Menu setup and display
+    menu_options = [
+        ("1", "Client Menu"),
+        ("2", "Employee Menu"),
+        ("3", "Appointment Menu"),
+        ("Q", "Quit the program")
+    ]
+    menu = make_menu("Main Menu", menu_options, border_color="bright_green")
+    display_centered(menu)
+    display_centered("[bold white]Select an option (1–3 or Q)[/bold white]")
+
+    # Wait for user Input
+    choice = Prompt.ask("\n[bold bright_cyan]Enter your choice[/bold bright_cyan]", choices=[str(i) for i in range(1, 4)] + ["q", "Q"], default="Q")
+    return choice.upper()
 
 if __name__ == "__main__":
-    main()
+    load_dummy_data()
+    while True:
+        option = show_main_menu()
+        console.clear()
+
+        if option == "1":
+            show_client_menu()
+        elif option == "2":
+            console.print(Panel("[bold green]Registering new employee...[/bold green]"))
+        elif option == "3":
+            console.print(Panel("[bold yellow]Scheduling new appointment...[/bold yellow]"))
+        elif option == "Q":
+            console.print(Panel("[bold red]Exiting...[/bold red]"))
+            break
+
+        console.input("\n[dim]Press Enter to return to the main menu...[/dim]")

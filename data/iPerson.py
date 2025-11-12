@@ -14,6 +14,11 @@ class Person(ABC):
     def __str__(self):
         pass
     
+    # Will be overwritten by Client and Employee __to_dict__ implementations.
+    @abstractmethod
+    def to_dict(self):
+        pass
+
     # Returns the age of a person.
     def get_age(self) -> int:
         today = date.today()

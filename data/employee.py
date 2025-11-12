@@ -24,3 +24,13 @@ class Employee(Person):
         console = Console()
         console.print(table)
         return ""
+
+    def to_dict(self):
+        return {
+            "employee_id": self.employee_id,
+            "name": self.name,
+            "dob": self.dob.strftime("%Y-%m-%d"),
+            "email": self.email,
+            "phone": self.phone,
+            "is_bday_gift_active": self.is_bday_gift_active
+        }
