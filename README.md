@@ -15,6 +15,7 @@ Final Project for OOP at IFTS N°11
         - On a terminal write `python3 -m venv FacundoSosa`
         - On the same cmd, activate the newly created venv `.\FacundoSosa\Scripts\activate`
         3. Install the required dependencies by writing `pip install -r requirements.txt`
+3. Run main.py
 
 
 ## Functional Requirements
