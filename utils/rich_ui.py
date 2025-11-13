@@ -1,73 +1,134 @@
 from typing import List, Tuple
+
+#rich libraries
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.align import Align
 from rich import box
 from rich.prompt import Prompt
+from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
 
-console = Console()
+#libs for the loading bards
+import time
+import random
 
-# Makes a header
-def make_panel(title: str,subtitle: str = "", color: str = "bright_blue"):
-    text = f"[bold cyan]{title}[/bold cyan]"
-    if(subtitle):
-        text += f"\n[dim]{subtitle}[/dim]"
-    return Panel.fit(text, border_style=color)
+class RichUI:
+    console = Console()
+    
+    #builds the Title panel. The one that's on top of any menu
+    @staticmethod
+    def make_panel(title: str, subtitle: str = "", color: str = "bright_blue"):
+        text = f"[bold cyan]{title}[/bold cyan]"
+        if subtitle:
+            text += f"\n[dim]{subtitle}[/dim]"
+        return Panel.fit(text, border_style=color)
 
+    #builds the menu frames and gets the data as a Tuple list to send it over to the _menu_core
+    @staticmethod
+    def make_menu(items: List[Tuple[str, str]], border_color: str = "bright_green") -> Table:
+        menu = Table(
+            box=box.DOUBLE_EDGE,
+            border_style=border_color,
+            show_header=False,
+            padding=(0, 2)
+        )
+        for key, desc in items:
+            menu.add_row(f"[green]{key}[/green]", desc)
+        return menu
+    
+    #builds any menu. It needs a title, a subtitle and a tuple list (not quite like, but like an "unga bunga" dictionary) 
+    #to list all the possible options
+    #it also handles input verification
+    @staticmethod
+    def _menu_core(title: str, subtitle: str, items: List[Tuple[str, str]]):
+        RichUI.clear()
+        RichUI.center(RichUI.make_panel(title, subtitle))
+        menu = RichUI.make_menu(items)
+        RichUI.center(menu)
 
-# Makes a menu
-def make_menu(title: str, items: List[Tuple[str, str]], border_color: str = "bright_magenta") -> Table:
-    menu = Table(
-        title=f"[bold yellow]{title}[/bold yellow]",
-        title_style="bold yellow",
-        box=box.DOUBLE_EDGE,
-        border_style=border_color,
-        show_header=False,
-        padding=(0, 2)
-    )
-    for key, desc in items:
-        menu.add_row(f"[green]{key}[/green]", desc)
-    return menu
+        #create valid keys
+        valid_keys = [key.lower() for key, _ in items] + ["Q"]
 
+        #ask for user input
+        choice = Prompt.ask(
+            "\n[bold white]Select an option[/bold white]",
+            choices=valid_keys,
+            default="Q"
+        ).upper()
+        if(choice != "Q"):
+            RichUI.loading()
 
-# Centers the drawn consoles
-def display_centered(panel_or_table):
-    console.print(Align.center(panel_or_table))
+        return choice
 
+    #CRUD menu builder for appointments, clients and employees
+    @staticmethod
+    def crud_menu(title: str, subtitle: str, items: List[Tuple[str, str]]):
+        #stay in the menu until the user presses q-Q or Enter
+        while True:
+            try:
+                choice = RichUI._menu_core(title, subtitle, items)
 
-# Waits for user input
-def pause():
-    console.input("\n[dim]Press Enter to continue...[/dim]")
+                if choice == "Q":
+                    RichUI.console.print(Panel("[bright_red]Returning to main menu...[/bright_red]"))
+                    RichUI.loading()
+                    RichUI.clear()
+                    break
+                
+                #i need to yield the choice in order to send it over to the menu
+                #without exiting the loop from the crud_menu
+                yield choice
 
-# Default Menu for CRUD (employees, clients and appointments). This is a template.
-def crud_menu(title: str, subtitle: str, items: List[Tuple[str, str]], border_color: str = "bright_green"):
-    while True:
+            except Exception as e:
+                RichUI.console.print(Panel(f"[red]Error creating the CRUD menu: {e}[/red]"))
+                RichUI.pause()
+
+    #main menu. It has a slightly diff set up since I need the while true in main.py, not in the menu itself
+    #(this menu is either on screen or not on screen).
+    @staticmethod
+    def simple_menu(title: str, subtitle: str, items: List[Tuple[str, str]]):
         try:
-            # Manage the header and prompt
-            console.clear()
-            display_centered(make_panel(title, subtitle))
-            menu = make_menu(title, items, border_color)
-            display_centered(menu)
-            display_centered("[bold white]Select an option[/bold white]")
-
-            # Get user choice
-            choice = Prompt.ask(
-                "\n[bold bright_cyan]Enter your choice[/bold bright_cyan]",
-                choices=[key for key, _ in items] + ["b", "B"],
-                default="B"
-            ).upper()
-
-            console.clear()
-
-            # Handle user input
-            if(choice == "B"):
-                console.print(Panel("[bright_red]Returning to main menu...[/bright_red]"))
-                break
-                console.print(Panel(throw_exception(2)))
-
-            # "send" the info back to the menu
-            yield choice
+            return RichUI._menu_core(title, subtitle, items)
         except Exception as e:
-            console.print(Panel(f"[red]Unhandled exception: {e}[/red]"))
-            pause()
+            RichUI.console.print(Panel(f"[red]Error creating the main menu: {e}[/red]"))
+            RichUI.pause()
+
+    #fancy loading bar. It doesn't do anything else
+    #i felt as tho going from one screen to the other was just too jarring.
+    @staticmethod
+    def loading():
+        duration = random.uniform(0.5, 1.5)
+
+        with Progress(
+            TextColumn("[bold cyan]Loading[/bold cyan]"),
+            BarColumn(),
+            TimeRemainingColumn(),
+            transient=True,
+            console=RichUI.console
+        ) as progress:
+
+            task = progress.add_task("", total=duration)
+            start = time.perf_counter()
+
+            while True:
+                elapsed = time.perf_counter() - start
+                if elapsed >= duration:
+                    progress.update(task, completed=duration)
+                    break
+                progress.update(task, completed=elapsed)
+                time.sleep(0.05)
+
+    #use and abuse the static methods
+    #these are just normal methods from rich that I made static
+    #so i can use them with ui.whatever()
+    @staticmethod
+    def clear():
+        RichUI.console.clear()
+
+    @staticmethod
+    def center(obj):
+        RichUI.console.print(Align.center(obj))
+
+    @staticmethod
+    def console_message(message: str):
+        RichUI.console.input(f"\n[dim]{message}[/dim]")
