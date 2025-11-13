@@ -14,6 +14,7 @@ def load_dummy_data():
 
 
 if __name__ == "__main__":
+    #TODO: change this to load .csv files
     load_dummy_data()
 
     while True:
@@ -31,7 +32,7 @@ if __name__ == "__main__":
                 show_appointment_menu()
 
             elif option == "4":
-                show_non_existent_menu()
+                ui.confirm_action("Are you sure you want to exit?", "Any unsaved data will be lost...")
 
             elif option == "Q":
                 ui.console.print(Panel("[bold red]Exiting...[/bold red]"))
@@ -39,5 +40,4 @@ if __name__ == "__main__":
 
         except Exception as e:
             ui.console.print(Panel(f"[red]Unhandled Exception: {e}[/red]"))
-
-        ui.console_message("Please press 'Enter' key to continue...")
+            ui.pause("Please press 'Enter' key to continue...")

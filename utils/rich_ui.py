@@ -118,6 +118,27 @@ class RichUI:
                 progress.update(task, completed=elapsed)
                 time.sleep(0.05)
 
+    #warning message that will have any string displayed          
+    @staticmethod
+    def confirm_action(message: str, subtitle: str) -> bool:
+        warning_panel = Panel.fit(
+            f"[bold bright_yellow]{message}[/bold bright_yellow]\n\n"
+            f"[dim]{subtitle}[/dim]\n\n"
+            f"[cyan]Confirm? (Y/N)[/cyan]",
+            border_style="bright_red"
+        )
+
+        RichUI.center(warning_panel)
+
+        choice = Prompt.ask(
+            "\n[bold white]Enter your choice[/bold white]",
+            choices=["y", "n"],
+            default="N"
+        ).upper()
+
+        RichUI.loading()
+        return choice == "Y"
+
     #use and abuse the static methods
     #these are just normal methods from rich that I made static
     #so i can use them with ui.whatever()
@@ -130,5 +151,5 @@ class RichUI:
         RichUI.console.print(Align.center(obj))
 
     @staticmethod
-    def console_message(message: str):
+    def pause(message: str):
         RichUI.console.input(f"\n[dim]{message}[/dim]")
