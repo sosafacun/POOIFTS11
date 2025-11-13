@@ -23,19 +23,23 @@ if __name__ == "__main__":
             ui.clear()
 
             if option == "1":
+                ui.show_loading_message("Client Menu...")
                 show_client_menu()
 
             elif option == "2":
+                ui.show_loading_message("Employee Menu...")
                 show_employee_menu()
 
             elif option == "3":
+                ui.show_loading_message("Appointment Menu...")
                 show_appointment_menu()
 
             elif option == "4":
-                ui.confirm_action("Are you sure you want to exit?", "Any unsaved data will be lost...")
+                ui.show_loading_message("Non-existent Menu...")
+                show_non_existent_menu()
 
             elif option == "Q":
-                ui.console.print(Panel("[bold red]Exiting...[/bold red]"))
+                ui.show_loading_message(". . .")
                 break
 
         except Exception as e:
