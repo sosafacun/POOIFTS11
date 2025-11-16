@@ -1,6 +1,6 @@
 # client.py
 from datetime import datetime
-from data.iPerson import Person
+from models.iPerson import Person
 
 class Client(Person):
     def __init__(

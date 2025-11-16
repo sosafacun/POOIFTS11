@@ -1,6 +1,6 @@
 # employee.py
 from datetime import datetime
-from data.iPerson import Person
+from models.iPerson import Person
 
 class Employee(Person):
     def __init__(

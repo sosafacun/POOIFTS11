@@ -1,6 +1,6 @@
 # appointment.py
 from datetime import datetime
-from data.status import Status
+from models.status import Status
 
 class Appointment:
     def __init__(
