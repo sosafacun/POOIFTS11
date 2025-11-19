@@ -63,27 +63,6 @@ class RichUI:
 
         return choice
 
-    #CRUD menu builder for appointments, clients and employees
-    @staticmethod
-    def crud_menu(title: str, subtitle: str, items: List[Tuple[str, str]]):
-        #stay in the menu until the user presses q-Q or Enter
-        while True:
-            try:
-                choice = RichUI._menu_core(title, subtitle, items)
-
-                if choice == "Q":
-                    RichUI.clear()
-                    RichUI.show_loading_message("Main menu")
-                    break
-                
-                #i need to yield the choice in order to send it over to the menu
-                #without exiting the loop from the crud_menu
-                yield choice
-
-            except Exception as e:
-                RichUI.console.print(Panel(f"[red]Error creating the CRUD menu: {e}[/red]"))
-                RichUI.pause()
-
     #main menu. It has a slightly diff set up since I need the while true in main.py, not in the menu itself
     @staticmethod
     def simple_menu(title: str, subtitle: str, items: List[Tuple[str, str]]):
