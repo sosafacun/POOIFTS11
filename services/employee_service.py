@@ -4,17 +4,20 @@ from utils.rich_ui import RichUI as ui
 class EmployeeService(IService):
 
     def create(self):
-        print("Creating Employee")
-
+        try:
+            ui.pause()
+        except Exception as e:
+            ui.throw_exception("failed: ",)
+            
     def read(self):
-        print("Reading Employees")
+        ui.pause()
 
     def update(self):
-        print("Updating Employee")
+        ui.pause()
 
     def delete(self):
-        print("Deleting Employee")
+        ui.pause()
 
     def search(self):
-        print("Searching Employee")
+        ui.pause()
         

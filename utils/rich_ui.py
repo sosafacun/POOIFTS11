@@ -151,3 +151,11 @@ class RichUI:
     @staticmethod
     def pause(message: str):
         RichUI.console.input(f"\n[dim]Press 'Enter' to continue . . .[/dim]")
+
+    @staticmethod
+    def pause():
+        RichUI.console.input(f"\n[dim]Press 'Enter' to continue . . .[/dim]")
+    
+    @staticmethod
+    def throw_exception(msg,e):
+        RichUI.console.print(Panel(f"[red]{msg}: {e}[/red]"))

@@ -4,17 +4,17 @@ from utils.rich_ui import RichUI as ui
 class ClientService(IService):
 
     def create(self):
-        print("Creating client")
+        ui.pause()
 
     def read(self):
-        print("Reading clients")
+        ui.pause()
 
     def update(self):
-        print("Updating client")
+        ui.pause()
 
     def delete(self):
-        print("Deleting client")
+        ui.pause()
 
     def search(self):
-        print("Searching client")
+        ui.pause()
         
