@@ -1,4 +1,5 @@
 from services.iService import IService
+from utils.rich_ui import RichUI as ui
 
 class ClientService(IService):
 

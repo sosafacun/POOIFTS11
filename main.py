@@ -1,47 +1,61 @@
+#rich lib
 from utils.rich_ui import RichUI as ui
-from rich.panel import Panel
 
-# menus
-from menus.main_menu import show_main_menu
-from menus.client_menu import show_client_menu
-from menus.employee_menu import show_employee_menu
-from menus.appointment_menu import show_appointment_menu
+#DI for the services
+from services.client_service import ClientService
+client_service = ClientService()
 
+from services.employee_service import EmployeeService
+employee_service = EmployeeService()
+
+from services.appointment_service import AppointmentService
+appointment_service = AppointmentService()
+
+#DI for the controllers
+from controllers.crud_controller import CRUDController
+client_controller = CRUDController("Client", client_service, ui)
+employee_controller = CRUDController("Employee", employee_service, ui)
+appointment_controller = CRUDController("Appointment", appointment_service, ui)
+
+#Assign a controller for each choice
+controllers = {
+    "1": client_controller,
+    "2": employee_controller,
+    "3": appointment_controller
+}
 
 def load_dummy_data():
     #it was bothering me so i just deleted it. I'll add something later down the line.
     pass
 
+def build_crud_menu(controller):
+    return[
+    ("1",f"Register new {controller.name}"),
+    ("2",f"View all {controller.name}"),
+    ("3",f"Update existing {controller.name}"),
+    ("4",f"Delete existing {controller.name}"),
+    ("5",f"Search for {controller.name}"),
+    ("Q","Go back to the main menu")
+]
 
 if __name__ == "__main__":
-    #TODO: change this to load .csv files
-    load_dummy_data()
 
     while True:
-        try:
-            option = show_main_menu()
-            ui.clear()
+        choice = ui.simple_menu(
+            "Final OOP Project     |\t\t       IFTS N°11",
+            "Student: Facundo Sosa | Professor: Mariano Billi",
+            [
+                ("1","Client Menu"),
+                ("2","Employee Menu"),
+                ("3","Appointment Menu"),
+                ("Q","Exit Program")
+            ]
+        )
 
-            if option == "1":
-                ui.show_loading_message("Client Menu...")
-                show_client_menu()
-
-            elif option == "2":
-                ui.show_loading_message("Employee Menu...")
-                show_employee_menu()
-
-            elif option == "3":
-                ui.show_loading_message("Appointment Menu...")
-                show_appointment_menu()
-
-            elif option == "4":
-                ui.show_loading_message("Non-existent Menu...")
-                show_non_existent_menu()
-
-            elif option == "Q":
-                ui.show_loading_message(". . .")
-                break
-
-        except Exception as e:
-            ui.console.print(Panel(f"[red]Unhandled Exception: {e}[/red]"))
-            ui.pause("Please press 'Enter' key to continue...")
+        if choice == "Q":
+            ui.show_loading_message(". . .")
+            break
+        
+        controller = controllers.get(choice)
+        if controller:
+            controller.run_menu(build_crud_menu(controller))

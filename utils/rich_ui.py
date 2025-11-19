@@ -50,7 +50,7 @@ class RichUI:
         RichUI.center(menu)
 
         #create valid keys
-        valid_keys = [key.lower() for key, _ in items] + ["Q"]
+        valid_keys = [key.lower() for key, _ in items]
 
         #ask for user input
         choice = Prompt.ask(
@@ -66,10 +66,11 @@ class RichUI:
     #main menu. It has a slightly diff set up since I need the while true in main.py, not in the menu itself
     @staticmethod
     def simple_menu(title: str, subtitle: str, items: List[Tuple[str, str]]):
+        RichUI.show_loading_message(title)
         try:
             return RichUI._menu_core(title, subtitle, items)
         except Exception as e:
-            RichUI.console.print(Panel(f"[red]Error creating the main menu: {e}[/red]"))
+            RichUI.console.print(Panel(f"[red]Error creating menu: {e}[/red]"))
             RichUI.pause()
 
     #fancy loading bar. It doesn't do anything else
