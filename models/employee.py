@@ -1,19 +1,21 @@
+# employee.py
 from datetime import datetime
-from data.iPerson import Person
-
+from models.iPerson import Person
 
 class Employee(Person):
-    def __init__(self,
+    def __init__(
+        self,
         name: str,
         dob: str,
         email: str,
         phone: str,
         employee_id: int,
-        is_bday_gift_active: bool):
-
+        is_bday_gift_active: bool
+    ):
         super().__init__(name, dob, email, phone, is_bday_gift_active)
         self.employee_id = employee_id
-
+        
+    #obj -> dict converter
     def to_dict(self):
         return {
             "employee_id": self.employee_id,

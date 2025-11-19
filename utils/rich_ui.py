@@ -8,6 +8,7 @@ from rich.align import Align
 from rich import box
 from rich.prompt import Prompt
 from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
+from rich.live import Live
 
 #libs for the loading bards
 import time
@@ -40,6 +41,7 @@ class RichUI:
     #builds any menu. It needs a title, a subtitle and a tuple list (not quite like, but like an "unga bunga" dictionary) 
     #to list all the possible options
     #it also handles input verification
+    #if it does 2 things then maybe i need to split it? idk. It's a menu core, so maybe it's fine for it to do 2 things.
     @staticmethod
     def _menu_core(title: str, subtitle: str, items: List[Tuple[str, str]]):
         RichUI.clear()
@@ -57,7 +59,7 @@ class RichUI:
             default="Q"
         ).upper()
         if(choice != "Q"):
-            RichUI.loading()
+            pass
 
         return choice
 
@@ -70,9 +72,8 @@ class RichUI:
                 choice = RichUI._menu_core(title, subtitle, items)
 
                 if choice == "Q":
-                    RichUI.console.print(Panel("[bright_red]Returning to main menu...[/bright_red]"))
-                    RichUI.loading()
                     RichUI.clear()
+                    RichUI.show_loading_message("Main menu")
                     break
                 
                 #i need to yield the choice in order to send it over to the menu
@@ -84,7 +85,6 @@ class RichUI:
                 RichUI.pause()
 
     #main menu. It has a slightly diff set up since I need the while true in main.py, not in the menu itself
-    #(this menu is either on screen or not on screen).
     @staticmethod
     def simple_menu(title: str, subtitle: str, items: List[Tuple[str, str]]):
         try:
@@ -96,33 +96,51 @@ class RichUI:
     #fancy loading bar. It doesn't do anything else
     #i felt as tho going from one screen to the other was just too jarring.
     @staticmethod
-    def loading():
+    def _show_loading_bar():
         duration = random.uniform(0.5, 1.5)
 
-        with Progress(
-            TextColumn("[bold cyan]Loading[/bold cyan]"),
+        progress = Progress(
             BarColumn(),
             TimeRemainingColumn(),
-            transient=True,
+            expand=False,
             console=RichUI.console
-        ) as progress:
+        )
 
-            task = progress.add_task("", total=duration)
+        task = progress.add_task("", total=duration)
+        centered = Align.center(progress)
+
+        #since i need the bar centered, this will
+        #refresh the display (cannot center AND have a progressive bar)
+        with Live(centered, refresh_per_second=30, console=RichUI.console):
             start = time.perf_counter()
-
             while True:
                 elapsed = time.perf_counter() - start
                 if elapsed >= duration:
                     progress.update(task, completed=duration)
                     break
+
                 progress.update(task, completed=elapsed)
                 time.sleep(0.05)
+
+        RichUI.clear()
+
+    #this is how it gets called from any menu
+    @staticmethod
+    def show_loading_message(message: str):
+        panel = Panel.fit(
+            f"[bold cyan]Loading {message}[/bold cyan]",
+            border_style="bright_blue"
+        )
+
+        RichUI.center(panel)
+        RichUI._show_loading_bar()
 
     #warning message that will have any string displayed          
     @staticmethod
     def confirm_action(message: str, subtitle: str) -> bool:
         warning_panel = Panel.fit(
-            f"[bold bright_yellow]{message}[/bold bright_yellow]\n\n"
+            f"[bold bright_yellow]WARNING[/bold bright_yellow]\n\n"
+            f"[bold white]{message}[/bold white]\n\n"
             f"[dim]{subtitle}[/dim]\n\n"
             f"[cyan]Confirm? (Y/N)[/cyan]",
             border_style="bright_red"
@@ -136,7 +154,7 @@ class RichUI:
             default="N"
         ).upper()
 
-        RichUI.loading()
+        RichUI.show_loading_message(". . .")
         return choice == "Y"
 
     #use and abuse the static methods
@@ -152,4 +170,4 @@ class RichUI:
 
     @staticmethod
     def pause(message: str):
-        RichUI.console.input(f"\n[dim]{message}[/dim]")
+        RichUI.console.input(f"\n[dim]Press 'Enter' to continue . . .[/dim]")
