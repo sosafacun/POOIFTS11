@@ -1,6 +1,3 @@
-from utils.rich_ui import RichUI as ui
-
-
 #this took so long omg i need a break. why didn't i plan this ahead of time?
 class CRUDController():
     #to create a controller you need the name (used for the ui), a service (used to control what each handler does)
