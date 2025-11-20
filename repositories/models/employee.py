@@ -1,11 +1,5 @@
-from datetime import datetime
 from dataclasses import dataclass
-
-#exception thrower to catch any non-filled fields
-def _require(value: str, field_name: str):
-    if not value or not value.strip():
-        raise ValueError(f"{field_name} is required!")
-    return value.strip()
+from services.validators.validator import require, require_date
 
 #omg, i didn't know dataclasses were a thing. They are so fucking goated to work with.
 @dataclass
@@ -20,7 +14,7 @@ class Employee():
 
     #valitador made ez. When registering a new Employee these are the only necessary fields.
     def validate(self):
-        self.name = _require(self.name, "Name")
-        self.last_name = _require(self.name, "Last name")
-        self.dob = _require(self.name, "Date of Birth")
-        self.phone = _require(self.name, "Phone")
+        self.name = require(self.name, "Name")
+        self.last_name = require(self.last_name, "Last name")
+        self.dob = require_date(self.dob, "Date of Birth")
+        self.phone = require(self.phone, "Phone")
