@@ -9,10 +9,12 @@ from rich import box
 from rich.prompt import Prompt
 from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
 from rich.live import Live
+from rich.columns import Columns
 
 #libs for the loading bards
 import time
 import random
+from math import ceil
 
 class RichUI:
     console = Console()
@@ -49,21 +51,32 @@ class RichUI:
         menu = RichUI.make_menu(items)
         RichUI.center(menu)
 
-        #create valid keys
+        #create valid keys (inputs)
         valid_keys = [key.lower() for key, _ in items]
 
-        #ask for user input
+        return RichUI._option_select(valid_keys, "Q")
+
+    @staticmethod
+    def _option_select(valid_keys, default_opt):
         choice = Prompt.ask(
             "\n[bold white]Select an option[/bold white]",
             choices=valid_keys,
-            default="Q"
+            default=default_opt
         ).upper()
         if(choice != "Q"):
             pass
 
         return choice
-
-    #main menu. It has a slightly diff set up since I need the while true in main.py, not in the menu itself
+    
+    @staticmethod
+    def prompt_user(msg: str):
+        while True:
+            user_input = Prompt.ask(f"\n[bold white]{msg}[/bold white]").strip()
+            if(user_input):
+                return user_input
+            RichUI.warning("\nField cannot be blank")
+            
+    #simple menu. It does what it seems. Renders a simple menu
     @staticmethod
     def simple_menu(title: str, subtitle: str, items: List[Tuple[str, str]]):
         RichUI.show_loading_message(title)
@@ -74,7 +87,7 @@ class RichUI:
             RichUI.pause()
 
     #fancy loading bar. It doesn't do anything else
-    #i felt as tho going from one screen to the other was just too jarring.
+    #i felt as tho going from one screen to the other was too jarring.
     @staticmethod
     def _show_loading_bar():
         duration = random.uniform(0.5, 1.5)
@@ -149,8 +162,8 @@ class RichUI:
         RichUI.console.print(Align.center(obj))
 
     @staticmethod
-    def pause(message: str):
-        RichUI.console.input(f"\n[dim]Press 'Enter' to continue . . .[/dim]")
+    def pause_message(message: str):
+        RichUI.console.input(f"\n[dim]{message}[/dim]")
 
     @staticmethod
     def pause():
@@ -159,3 +172,63 @@ class RichUI:
     @staticmethod
     def throw_exception(msg,e):
         RichUI.console.print(Panel(f"[red]{msg}: {e}[/red]"))
+
+    @staticmethod
+    def warning_message(msg: str):
+        RichUI.console.print(Panel(f"[red]{msg}[/red]"))
+
+    @staticmethod
+    def show_cards(items):
+        RichUI.show_loading_message(". . .")
+        RichUI.paginate(items, 6)
+
+    #having 10+ entries was making the ui ugly
+    #pagination only shows 6
+    #. increases the page number
+    #, decreases the page number
+    #q goes back to the previous menu
+    @staticmethod
+    def paginate(items, page_size):
+        #ceiling rounds up the number of pages needed
+        pages = ceil(len(items) / page_size)
+        index = 0
+
+        while True:
+            RichUI.clear()
+
+            start = index * page_size
+            end = start + page_size
+            chunk = items[start:end]
+
+            #create the cards
+            panels = []
+            for obj in chunk:
+                left, right = obj.card_header()
+                header = f"{left:<15} | {right}"
+
+                line = "─" * len(header)
+                line = f"[cyan]{line}[/cyan]"
+
+                body_lines = [f"{label}: {value}" for label, value in obj.card_body()]
+                body = "\n".join(body_lines)
+                content = f"{header}\n{line}\n{body}"
+
+                panels.append(Panel(content, border_style=obj.card_color()))
+
+            RichUI.center(Columns(panels, equal=True, expand=True))
+
+            #show navigational options
+            nav_text = f"[dim]Page {index+1}/{pages} | '.' next | ',' prev | 'Q' Go Back[/dim]"
+            RichUI.console.print(f"\n{nav_text}")
+
+            #get navigational options
+            choice = Prompt.ask("", choices=[".", ",", "Q", "q"], default="Q")
+            
+            if choice.upper() == "Q":
+                break
+
+            if choice == "." and index < pages - 1:
+                index += 1
+
+            elif choice == "," and index > 0:
+                index -= 1

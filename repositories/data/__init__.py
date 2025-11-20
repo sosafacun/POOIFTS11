@@ -1,0 +1,1 @@
+#idk if i'll use this for data conversion or just for data storing. The __init__.py is just here *just in case*
