@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import datetime
 from services.validators.validator import require, require_date
 
 #omg, i didn't know dataclasses were a thing. They are so fucking goated to work with.
@@ -10,8 +11,15 @@ class Client():
     dob: str
     phone: str
     is_bday_gift_active: bool
-    last_visit: str
+    last_visit: str = ""
 
+    #this makes a dataclass field nnot required for a constructor.
+    age: int = field(init=False)
+
+    def __post_init__(self):
+        self.age = self._get_age()
+        #since a client can be registered and NOT have a visit, this can be empty
+        self.last_visit = self.last_visit or ""
 
     #valitador made ez. When registering a new client these are the only necessary fields.
     def validate(self):
@@ -19,3 +27,22 @@ class Client():
         self.last_name = require(self.last_name, "Last name")
         self.dob = require_date(self.dob, "Date of Birth")
         self.phone = require(self.phone, "Phone")
+
+    def _get_age(self):
+        birthdate = datetime.strptime(self.dob, "%Y-%m-%d")
+        today = datetime.today()
+        return today.year - birthdate.year -((today.month, today.day) < (birthdate.month, birthdate.day)) #stackoverflow
+
+    def card_header(self):
+        return (f"{self.name} {self.last_name}", self.client_id) 
+
+    def card_body(self):
+        return [
+            ("Phone", self.phone),
+            ("Age", f"{self.age} [dim]({self.dob})[/dim]"),
+            ("Birthday Gift", "Active" if self.is_bday_gift_active else "Inactive"),
+            ("Last Visit", f"{self.last_visit}" if self.last_visit else "None Registered")
+        ]
+
+    def card_color(self):
+        return "bright_blue"

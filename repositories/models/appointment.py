@@ -1,7 +1,8 @@
-from models.status import Status
-from models.client import Client
-from models.employee import Employee
+from .status import Status
+from .client import Client
+from .employee import Employee
 from services.validators.validator import require, require_date
+from dataclasses import dataclass
 
 #omg, i didn't know dataclasses were a thing. They are so fucking goated to work with.
 @dataclass

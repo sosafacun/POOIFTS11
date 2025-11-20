@@ -17,16 +17,15 @@ client_controller = CRUDController("Client", client_service, ui)
 employee_controller = CRUDController("Employee", employee_service, ui)
 appointment_controller = CRUDController("Appointment", appointment_service, ui)
 
+#TODO: remove this one the csv implementation is done.
+from repositories.data.data import init_data
+
 #Assign a controller for each choice
 controllers = {
     "1": client_controller,
     "2": employee_controller,
     "3": appointment_controller
 }
-
-def load_dummy_data():
-    #it was bothering me so i just deleted it. I'll add something later down the line.
-    pass
 
 def build_crud_menu(controller):
     return[
@@ -38,12 +37,13 @@ def build_crud_menu(controller):
     ("Q","Go back to the main menu")
 ]
 
-if __name__ == "__main__":
+def main():
+    init_data()
 
     while True:
         choice = ui.simple_menu(
             "Final OOP Project     |\t\t       IFTS N°11",
-            "Student: Facundo Sosa | Professor: Mariano Billi",
+            "Student: Facundo Sosa | Professor: Emiliano Billi",
             [
                 ("1","Client Menu"),
                 ("2","Employee Menu"),
@@ -59,3 +59,6 @@ if __name__ == "__main__":
         controller = controllers.get(choice)
         if controller:
             controller.run_menu(build_crud_menu(controller))
+
+if __name__ == "__main__":
+    main()
