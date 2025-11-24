@@ -1,31 +1,7 @@
-#rich lib
 from utils.rich_ui import RichUI as ui
+from utils.builder import build
 
-#DI for the services
-from services.client_service import ClientService
-client_service = ClientService()
-
-from services.employee_service import EmployeeService
-employee_service = EmployeeService()
-
-from services.appointment_service import AppointmentService
-appointment_service = AppointmentService()
-
-#DI for the controllers
-from controllers.crud_controller import CRUDController
-client_controller = CRUDController("Client", client_service, ui)
-employee_controller = CRUDController("Employee", employee_service, ui)
-appointment_controller = CRUDController("Appointment", appointment_service, ui)
-
-#TODO: remove this one the csv implementation is done.
-from repositories.data.data import init_data
-
-#Assign a controller for each choice
-controllers = {
-    "1": client_controller,
-    "2": employee_controller,
-    "3": appointment_controller
-}
+controllers = build()
 
 def build_crud_menu(controller):
     return[
@@ -38,7 +14,6 @@ def build_crud_menu(controller):
 ]
 
 def main():
-    init_data()
 
     while True:
         choice = ui.simple_menu(

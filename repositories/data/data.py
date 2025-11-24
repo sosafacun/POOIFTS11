@@ -19,16 +19,16 @@ def create_client_data():
     is_bday_gift_active: bool 
     last_visit: str #YYYY-MM-DD'''
 
-    c01 = Client("01-10029384", "Lucia", "Gomez", "1995-03-14", "1123456789", False, "2025-10-12")
-    c02 = Client("01-20394856", "Martín", "Romero", "1988-07-02", "1132984455", False, "2025-09-28")
-    c03 = Client("01-30948322", "Sofia", "Martinez", "2001-11-21", "1145672233", False, "")
-    c04 = Client("01-40018293", "Diego", "Fernandez", "1992-01-05", "1149823344", False, "")
-    c05 = Client("01-50194827", "Valentina", "Lopez", "1999-06-17", "1156677889", False, "2025-10-31")
-    c06 = Client("01-60238941", "Tomas", "Cruz", "1985-09-30", "1162233445", False, "2025-07-14")
-    c07 = Client("01-70398421", "Camila", "Silva", "1997-02-28", "1174455667", False, "")
-    c08 = Client("01-80451233", "Sebastian", "Rios", "2000-12-09", "1183344552", False, "2025-09-02")
-    c09 = Client("01-90567312", "Florencia", "Castro", "1993-04-25", "1198899001", False, "2025-10-18")
-    c10 = Client("01-99871244", "Agustin", "Herrera", "1989-05-13", "1104456678", False, "2025-08-22")
+    c01 = Client("01-10029384", "Lucia", "Gomez", "1995-03-14", "1123456789")
+    c02 = Client("01-20394856", "Martín", "Romero", "1988-07-02", "1132984455")
+    c03 = Client("01-30948322", "Sofia", "Martinez", "2001-11-21", "1145672233")
+    c04 = Client("01-40018293", "Diego", "Fernandez", "1992-01-05", "1149823344")
+    c05 = Client("01-50194827", "Valentina", "Lopez", "1999-06-17", "1156677889")
+    c06 = Client("01-60238941", "Tomas", "Cruz", "1985-09-30", "1162233445")
+    c07 = Client("01-70398421", "Camila", "Silva", "1997-02-28", "1174455667")
+    c08 = Client("01-80451233", "Sebastian", "Rios", "2000-12-09", "1183344552")
+    c09 = Client("01-90567312", "Florencia", "Castro", "1993-04-25", "1198899001")
+    c10 = Client("01-99871244", "Agustin", "Herrera", "1989-05-13", "1104456678")
 
     client_list.extend([c01, c02, c03, c04, c05, c06, c07, c08, c09, c10])
 
@@ -41,16 +41,16 @@ def create_employee_data():
     phone: str  #xxxxxxxxxx
     is_bday_gift_active: bool'''
 
-    e01 = Employee("02-19283746", "Carolina", "Suarez", "1987-04-19", "1156672211", False)
-    e02 = Employee("02-28374655", "Javier", "Molina", "1991-09-12", "1145523388", False)
-    e03 = Employee("02-37465589", "Paula", "Benitez", "1998-03-03", "1133345566", False)
-    e04 = Employee("02-46558921", "Lucas", "Paredes", "1985-12-15", "1122981144", False)
-    e05 = Employee("02-55679234", "Maria", "Cabrera", "1994-02-27", "1177884466", False)
-    e06 = Employee("02-62347815", "Nicolas", "Bravo", "1990-11-04", "1189912233", False)
-    e07 = Employee("02-71234985", "Rocio", "Sanchez", "1996-06-09", "1194422311", False)
-    e08 = Employee("02-89341277", "Federico", "Diaz", "1983-01-22", "1165547788", False)
-    e09 = Employee("02-93412764", "Julieta", "Ortiz", "1997-10-08", "1147899922", False)
-    e10 = Employee("02-99834512", "Alejandro", "Campos", "1989-05-16", "1108876655", False)
+    e01 = Employee("02-19283746", "Carolina", "Suarez", "1987-04-19", "1156672211")
+    e02 = Employee("02-28374655", "Javier", "Molina", "1991-09-12", "1145523388")
+    e03 = Employee("02-37465589", "Paula", "Benitez", "1998-03-03", "1133345566")
+    e04 = Employee("02-46558921", "Lucas", "Paredes", "1985-12-15", "1122981144")
+    e05 = Employee("02-55679234", "Maria", "Cabrera", "1994-02-27", "1177884466")
+    e06 = Employee("02-62347815", "Nicolas", "Bravo", "1990-11-04", "1189912233")
+    e07 = Employee("02-71234985", "Rocio", "Sanchez", "1996-06-09", "1194422311")
+    e08 = Employee("02-89341277", "Federico", "Diaz", "1983-01-22", "1165547788")
+    e09 = Employee("02-93412764", "Julieta", "Ortiz", "1997-10-08", "1147899922")
+    e10 = Employee("02-99834512", "Alejandro", "Campos", "1989-05-16", "1108876655")
 
     employee_list.extend([e01, e02, e03, e04, e05, e06, e07, e08, e09, e10])
 

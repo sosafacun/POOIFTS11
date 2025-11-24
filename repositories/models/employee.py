@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
-from datetime import datetime
-from services.validators.validator import require, require_date
+from datetime import datetime, timedelta
+from services.validator import require, require_date
 
 #omg, i didn't know dataclasses were a thing. They are so fucking goated to work with.
 @dataclass
@@ -10,12 +10,12 @@ class Employee():
     last_name: str
     dob: str
     phone: str
-    is_bday_gift_active: bool
 
     age: int = field(init=False)
 
     def __post_init__(self):
         self.age = self._get_age()
+        self.is_bday_gift_active = self._set_bday_gift()
     
     #valitador made ez. When registering a new Employee these are the only necessary fields.
     def validate(self):
@@ -41,3 +41,10 @@ class Employee():
 
     def card_color(self):
         return "bright_green"
+    
+    def _set_bday_gift(self):
+        today = datetime.today().date()
+        birthdate = datetime.strptime(self.dob, "%Y-%m-%d").date()
+        birthday_this_year = birthdate.replace(year=today.year)
+        end_window = birthday_this_year.replace(year=today.year) + timedelta(days=13)
+        return birthday_this_year <= today <= end_window

@@ -1,7 +1,7 @@
 from .status import Status
 from .client import Client
 from .employee import Employee
-from services.validators.validator import require, require_date
+from services.validator import require, require_date
 from dataclasses import dataclass
 
 #omg, i didn't know dataclasses were a thing. They are so fucking goated to work with.
@@ -21,4 +21,17 @@ class Appointment():
         self.date = require_date(self.date, "Date")
         self.duration = require(self.duration_in_mins, "Duration (in minutes)")
         self.status = require(self.status, "Status")
-        
+    
+    def card_header(self):
+        return (f"Appointment {self.appointment_id}", self.date)
+
+    def card_body(self):
+        return [
+            ("Client", f"{self.client.name} {self.client.last_name}"),
+            ("Employee", f"{self.employee.name} {self.employee.last_name}"),
+            ("Duration", f"{self.duration_in_mins} minutes"),
+            ("Status", self.status.name if hasattr(self.status, "name") else self.status)
+        ]
+
+    def card_color(self):
+        return "bright_magenta"

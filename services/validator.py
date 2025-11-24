@@ -7,8 +7,10 @@ def require(value: str, field_name: str):
     return value.strip()
 
 def require_date(value: str, field_name: str):
-    is_present=_require(value, field_name)
+    value = require(value, field_name)  # reuse the existing validation
+
     try:
-        return datetime.strptime(cleaned, "%Y-%m-%d").date().isoformat() #I just copypasted this from stackoverflow. I *HATE* working with dates.
-    except ValueError as e:
-        raise ValueError(f"{field_name} must be in YYYY-MM-DD")
+        parsed = datetime.strptime(value, "%Y-%m-%d")
+        return parsed.date().isoformat()
+    except ValueError:
+        raise ValueError(f"{field_name} must be in YYYY-MM-DD format")
